@@ -11,42 +11,30 @@
   		})
   	})
   </script>
-    <div class="card shadow mb-4">
-            
-            <div class="card-body">
-              <form action="P_Board_IN" method="POST" id="frmBoardIN">
-                <table class="table table-bordered" id="dataTable" width="50%" cellspacing="0">
-                  <tbody>
-                    <tr>
-                      <th scope="row">작성자</th>
-                      <td><input type="hidden" name="USER_ID" value="${session_id}">${session_id }</td>
-                    </tr>
-                    <tr>
-                       <th scope="row">제목</th>
-                      <td ><input type="text" id="BOARD_TITLE" name="BOARD_TITLE"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="4" style="border: 1px solid #ccc; height: 100px;">
-                        <textarea rows="7" cols="100" id="BOARD_CONTEXT" name="BOARD_CONTEXT"></textarea>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <select name="BOARD_SECRET" id="BOARD_SECRET">
-                          <option value="Y">공개</option>
-                          <option value="N">비공개</option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th >비밀번호</th>
-                      <td colspan="4"><input type="password" id="bPwd" name=BOARD_PWD></td>
-                    </tr>
-                  </tbody>
-                </table>
-                </form>
-              </div>
-            </div>
-          <div style="text-align: right;">
-            <a href="P_Board_Insert" class="btn btn-primary" id="Board_IN">글쓰기</a>
-          </div>
+	<div class="card-body">
+		<form action="P_Board_Insert_POST" method="POST" id="frmBoardIN">
+			<div class="form-group">
+				<label for="exampleFormControlInput1">제목</label> <input type="text"
+					class="form-control" id="exampleFormControlInput1" name="B_SUBJECT"
+					placeholder="제목을 작성해주세요.">
+			</div>
+			<div class="form-group">
+				<label for="exampleFormControlInput1">작성자</label> <input type="text"
+					class="form-control" id="exampleFormControlInput1" name="B_WRITER" value="${session_id }">
+			</div>
+			<div class="form-group">
+				<label for="exampleFormControlTextarea1">내용</label>
+				<textarea class="form-control" id="exampleFormControlTextarea1"
+					name="B_CONTENT" rows="10"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="exampleFormControlInput1">비밀글</label>
+				<select class="form-control" id="exampleFormControlTextarea1" name="B_SECRET" style="width: 5%">
+					<option value="Y" >Y</option>
+					<option value="N">N</option>
+				</select>
+			</div>
+			<button type="submit" class="btn btn-info">등록하기</button>
+			<button type="button" class="btn btn-secondary">목록으로</button>
+		</form>
+	</div>

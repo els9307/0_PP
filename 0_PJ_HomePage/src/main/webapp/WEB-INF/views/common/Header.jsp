@@ -85,12 +85,12 @@
       </li>
 
       <!-- Nav Item - Tables -->
+      
       <li class="nav-item">
-        <a class="nav-link" href="P_Tables">
+        <a class="nav-link" id="" href="P_Tables">
           <i class="fas fa-fw fa-table"></i>
           <span>Tables</span></a>
       </li>
-
 
     </ul>
     <!-- End of Sidebar -->

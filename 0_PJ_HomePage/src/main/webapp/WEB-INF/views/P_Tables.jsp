@@ -6,7 +6,26 @@
   src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
 
 <script>
+	$(document).ready(function(){
+		
+		$("#bSearchBtn").click(function(){
+			$("#searchFrm").submit();
+		})
 
+	})
+	
+	
+	function getList(num){
+		alert("실행");
+ 		$.ajax({
+			type : "get",
+			url : "P_ListView",
+			data : {"num" : num},
+			success : function(data){
+				$("#view").html(data);
+			}
+		}) 
+	}
 </script>
 <style>
 	.table thead th{
@@ -20,7 +39,6 @@
 	}
 </style>
   <div class="card-body">
-  <div id="view_CB"></div><!-- 게시판 상세보기 콜백위치 -->
     <div class="table-responsive">
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="border: 2px solid #34456a">
         <thead>
@@ -32,12 +50,14 @@
           </tr>
         </thead>
         <tbody>
-          <c:forEach items="${asd}" var="list">
+          <c:forEach items="${arr}" var="arr" varStatus="status">
             <tr>
-              <td style="">${list.BOARD_NUM}</td>
-              <td><a href="#" onclick="javascript:getListView('${list.BOARD_NUM}','${list.BOARD_SECRET }','${list.BOARD_PWD }')">${list.BOARD_TITLE }</a></td>
-              <td>${list.USER_ID}</td>
-              <td>${list.BOARD_INSERT_DATE }</td>
+              <!-- vo객체에서 setter에 앞글자 소문자로 변경되있음 주의!!!!! -->
+              <td>${boardNum+status.count}</td>
+             <%--  <td><a href="#" onclick="javascript:getList('${arr.b_NUM}')">${arr.b_SUBJECT }</a></td> --%>
+              <td><a href="#" onclick="javascript:getList('${arr.b_NUM}')">${arr.b_SUBJECT }</a></td>
+              <td>${arr.b_WRITER }</td>
+              <td>${arr.b_SYSDATE }</td>
             </tr>
           </c:forEach>
         </tbody>
@@ -55,6 +75,6 @@
     </form>
     <div style="text-align: center;">${pageHtml}</div>
 
-    
+    <div id="view"></div>
   </div>
 

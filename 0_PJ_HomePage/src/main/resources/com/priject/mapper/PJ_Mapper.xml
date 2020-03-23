@@ -6,21 +6,81 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.priject.mapper.PJ_Mapper">
 
 	<insert id="P_Join_Post" parameterType="com.priject.vo.P_USERINFO">
-		INSERT INTO P_USERINFO(
-                 U_NUM
-                ,U_ID
-                ,U_PWD
-                ,U_EMAIL
-                ,U_SYSDATE
-                )VALUES(
-                P_USERINFO_SEQ.NEXTVAL
-                ,#{U_ID}
-                ,#{U_PWD}
-                ,#{U_EMAIL}
-                ,TO_CHAR(SYSDATE,'YYYY-MM-DD'))
+		<![CDATA[
+			INSERT INTO P_USERINFO(
+	                 U_NUM
+	                ,U_ID
+	                ,U_PWD
+	                ,U_EMAIL
+	                ,U_SYSDATE
+	                )VALUES(
+	                P_USERINFO_SEQ.NEXTVAL
+	                ,#{U_ID}
+	                ,#{U_PWD}
+	                ,#{U_EMAIL}
+	                ,TO_CHAR(SYSDATE,'YYYY-MM-DD'))
+        ]]>
 	</insert>
   
   	<select id="P_Login_Post" parameterType="String" resultType="com.priject.vo.P_USERINFO">
-  		SELECT * FROM P_USERINFO WHERE U_ID = #{id}
+  		<![CDATA[
+  			SELECT * FROM P_USERINFO WHERE U_ID = #{id}
+  		]]>
+  	</select>
+  	<insert id="P_Board_Insert_POST" parameterType="com.priject.vo.P_BOARD">
+  		<![CDATA[
+	  		INSERT INTO P_BOARD(
+	  						B_NUM
+	  					   ,B_SUBJECT
+	  					   ,B_CONTENT
+	  					   ,B_WRITER
+	  					   ,B_SECRET
+	  					   ,B_SYSDATE
+	  					   )VALUES(
+	  					    P_BOARD_SEQ.nextval
+	  					   ,#{B_SUBJECT}
+	  					   ,#{B_CONTENT}
+	  					   ,#{B_WRITER}
+	  					   ,#{B_SECRET}
+	  					   ,TO_CHAR(SYSDATE,'YYYY-MM-DD'))
+		]]>	  					   
+  	</insert>
+  	
+  	<select id="P_Tables_View" parameterType="java.util.HashMap" resultType="com.priject.vo.P_BOARD">
+  		<![CDATA[
+  			SELECT * 
+  				FROM( SELECT ROWNUM RN,AA.*FROM
+  						( SELECT  B_NUM
+				  				 ,B_SUBJECT
+				  				 ,B_CONTENT
+				  				 ,B_WRITER
+				  			     ,B_SECRET
+				  				 ,B_SYSDATE 
+				  		  FROM P_BOARD
+				  		  WHERE B_SUBJECT LIKE '%'||#{word}||'%'
+				  		  ORDER BY B_NUM DESC)AA)
+				  		  WHERE RN >= ${startRow} and RN <= ${endRow}
+  				   
+  		]]>
+  	</select>
+  	
+  	<select id="getCount" resultType="Integer">
+  		<![CDATA[
+  			SELECT COUNT(*) FROM P_BOARD WHERE B_SUBJECT LIKE '%'||#{word}||'%'
+  		]]>
+  	</select>
+  	
+  	<select id="getList" parameterType="String" resultType="com.priject.vo.P_BOARD">
+  		SELECT * FROM P_BOARD WHERE B_NUM = #{num}
+  	</select>
+  	
+  	
+  	<select id="getComment" parameterType="java.util.HashMap" resultType="com.priject.vo.P_COMMENT">
+  		<![CDATA[
+  		SELECT C.C_NUM,C.C_COMMENT,C.C_SYSDATE,C.C_WRITER
+     	   FROM P_COMMENT C, P_BOARD B
+      	   WHERE C.C_NUM = B.B_NUM
+      	   AND B.B_NUM = #{b_NUM}
+      	]]>   
   	</select>
 </mapper>

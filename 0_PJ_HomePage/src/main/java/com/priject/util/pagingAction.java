@@ -4,9 +4,10 @@ import org.springframework.stereotype.Service;
 
 @Service("pageAction")
 public class pagingAction {
-	public String paging(int count,int pageSize, int currentPage) {
+	public String paging(int count,int pageSize, int currentPage,String word) {
 		String file = "P_Tables";
 		int pageCount = count/pageSize + (count%pageSize==0?0:1);
+		System.out.println(pageCount);
 		int pageBlock = 3;
 		int startPage = ((currentPage-1)/pageBlock)*pageBlock+1;
 		int endPage = startPage + pageBlock-1;
@@ -19,7 +20,7 @@ public class pagingAction {
 			//이전
 			if(startPage>pageBlock) {
 				sb.append("<a class='button disabled' href="+file+"?");
-				sb.append("pageNum="+(startPage-pageBlock));
+				sb.append("pageNum="+(startPage-pageBlock)+"&"+"word="+word);
 				sb.append(">[이전]</a>");
 			}
 			//페이지
@@ -28,14 +29,14 @@ public class pagingAction {
 					sb.append("["+i+"]");
 				}else {
 					sb.append("<a href="+file+"?");
-					sb.append("pageNum="+i);
+					sb.append("pageNum="+i+"&"+"word="+word);
 					sb.append(">["+i+"]</a>");
 				}
 			}
 			//다음
 			if(endPage<pageCount) {
 				sb.append("<a href="+file+"?");
-				sb.append("pageNum="+(startPage+pageBlock));
+				sb.append("pageNum="+(startPage+pageBlock)+"&"+"word="+word);
 				sb.append(">[다음]</a>");
 			}
 		}
