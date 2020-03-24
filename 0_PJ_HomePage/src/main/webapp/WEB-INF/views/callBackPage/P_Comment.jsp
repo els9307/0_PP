@@ -15,12 +15,13 @@
 	  	<tbody>
 	  		<c:forEach items="${arr }" var="arr">
 	  			<tr>
-					<td style="width: 15%;">${arr.c_NUM }</td>
+					<td style="width: 15%;">${arr.c_WRITER }</td>
 					<td>${arr.c_COMMENT }</td>
 				</tr>
 			</c:forEach>
 	  	</tbody>
 	  </table>
+	  	${CommentPageHtml }
 	</div>
 </div>
 <%-- <div class="card-body">

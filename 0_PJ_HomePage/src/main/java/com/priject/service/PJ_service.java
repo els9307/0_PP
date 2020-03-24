@@ -44,14 +44,27 @@ public class PJ_service {
 		return pm.getCount(word);
 	}
 
-	public P_BOARD getList(String num) {
-		P_BOARD pb = pm.getList(num);
+	public P_BOARD getList(String num,String pwd) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("num",num);
+		map.put("pwd", pwd);
+		P_BOARD pb = pm.getList(map);
 		return pb; 
 	}
 	
-	public List<P_COMMENT> getComment(String b_NUM){
+	public List<P_COMMENT> getComment(String b_NUM,int startRow,int endRow){
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("b_NUM", b_NUM);
+		map.put("num", b_NUM);
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
 		return pm.getComment(map);
 	}
+	
+	public void P_Comment_I(P_COMMENT pc) {
+		pm.P_Comment_I(pc);
+	}
+	public int getCommentCount(String b_NUM) {
+		return pm.getCommentCount(b_NUM);
+	}
+
 }

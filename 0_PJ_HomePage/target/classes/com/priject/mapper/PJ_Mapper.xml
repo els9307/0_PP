@@ -36,13 +36,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  					   ,B_WRITER
 	  					   ,B_SECRET
 	  					   ,B_SYSDATE
+	  					   ,B_SECRET_PWD
 	  					   )VALUES(
 	  					    P_BOARD_SEQ.nextval
 	  					   ,#{B_SUBJECT}
 	  					   ,#{B_CONTENT}
 	  					   ,#{B_WRITER}
 	  					   ,#{B_SECRET}
-	  					   ,TO_CHAR(SYSDATE,'YYYY-MM-DD'))
+	  					   ,TO_CHAR(SYSDATE,'YYYY-MM-DD')
+	  					   ,#{B_SECRET_PWD})
 		]]>	  					   
   	</insert>
   	
@@ -56,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				  				 ,B_WRITER
 				  			     ,B_SECRET
 				  				 ,B_SYSDATE 
+				  				 ,B_SECRET_PWD
 				  		  FROM P_BOARD
 				  		  WHERE B_SUBJECT LIKE '%'||#{word}||'%'
 				  		  ORDER BY B_NUM DESC)AA)
@@ -70,17 +73,55 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		]]>
   	</select>
   	
-  	<select id="getList" parameterType="String" resultType="com.priject.vo.P_BOARD">
-  		SELECT * FROM P_BOARD WHERE B_NUM = #{num}
+  	<select id="getList" parameterType="java.util.HashMap" resultType="com.priject.vo.P_BOARD">
+  		<![CDATA[
+  			SELECT * FROM P_BOARD WHERE B_NUM = #{num}
+  		]]>
+
+  		<if test="pwd != '' and pwd != null">
+  			AND B_SECRET_PWD = #{pwd}
+  		</if>
+  		
   	</select>
   	
   	
   	<select id="getComment" parameterType="java.util.HashMap" resultType="com.priject.vo.P_COMMENT">
   		<![CDATA[
-  		SELECT C.C_NUM,C.C_COMMENT,C.C_SYSDATE,C.C_WRITER
+  		  			SELECT * 
+  				FROM( SELECT ROWNUM RN,AA.*FROM
+  						(   		SELECT C.C_NUM,C.C_COMMENT,C.C_SYSDATE,C.C_WRITER,C.B_NUM
      	   FROM P_COMMENT C, P_BOARD B
-      	   WHERE C.C_NUM = B.B_NUM
-      	   AND B.B_NUM = #{b_NUM}
+      	   WHERE C.B_NUM = B.B_NUM
+      	   AND C.B_NUM = #{num}
+      	   ORDER BY C.C_NUM DESC)AA)
+				  		  WHERE RN >= ${startRow} and RN <= ${endRow}
+
+
       	]]>   
+  	</select>
+  	
+  	<insert id="P_Comment_I"  parameterType="com.priject.vo.P_COMMENT">
+  		<![CDATA[
+		INSERT INTO P_COMMENT(
+	                           C_NUM
+	                          ,C_WRITER
+	                          ,C_COMMENT
+	                          ,C_SYSDATE
+	                          ,B_NUM
+	                          )
+	                          VALUES
+	                          (
+	                          P_COMMENT_SEQ.nextval
+	                          ,#{C_WRITER}
+	                          ,#{C_COMMENT}	                          
+	                          ,TO_CHAR(SYSDATE,'YYYY-MM-DD')
+	                          ,(SELECT B_NUM FROM P_BOARD WHERE B_NUM = #{B_NUM}))
+
+  		]]>
+  	</insert>
+  	  	<select id="getCommentCount" resultType="Integer">
+  		<![CDATA[
+  			SELECT COUNT(*) FROM P_COMMENT WHERE B_NUM = #{b_NUM}
+  		]]>
   	</select>
 </mapper>

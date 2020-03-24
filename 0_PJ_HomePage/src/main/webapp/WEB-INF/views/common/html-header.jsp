@@ -20,8 +20,7 @@
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   
 
-  <!-- JS파일 -->
-  <script src="resources/js/IndexScript.js"></script>
-  
+  <!-- 폰트어썸 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   
   

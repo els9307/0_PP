@@ -3,7 +3,22 @@
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
   <script>
   	$(document).ready(function(){
-  		
+  		$("#Board_Insert_Btn").click(function(){
+  			alert("123");
+			if($("#B_Subject_I").val() == ''){
+				alert("제목을 입력해주세요");
+				return false;
+			}
+			if($("#B_Content_I").val() == ''){
+				alert("내용을 입력해주세요");
+				return false;
+			}
+			if($("#B_Secret_I").val() == 'Y' && $("#B_Secret_Pwd_I").val() == ''){
+				alert("비밀글은 비밀번호 입력 필수 입니다.");
+				return false;
+			}
+  		})
+
   		$("#Board_IN").click(function(){
   			$("#frmBoardIN").submit();
 
@@ -11,30 +26,34 @@
   		})
   	})
   </script>
-	<div class="card-body">
-		<form action="P_Board_Insert_POST" method="POST" id="frmBoardIN">
-			<div class="form-group">
-				<label for="exampleFormControlInput1">제목</label> <input type="text"
-					class="form-control" id="exampleFormControlInput1" name="B_SUBJECT"
-					placeholder="제목을 작성해주세요.">
-			</div>
-			<div class="form-group">
-				<label for="exampleFormControlInput1">작성자</label> <input type="text"
-					class="form-control" id="exampleFormControlInput1" name="B_WRITER" value="${session_id }">
-			</div>
-			<div class="form-group">
-				<label for="exampleFormControlTextarea1">내용</label>
-				<textarea class="form-control" id="exampleFormControlTextarea1"
-					name="B_CONTENT" rows="10"></textarea>
-			</div>
-			<div class="form-group">
-				<label for="exampleFormControlInput1">비밀글</label>
-				<select class="form-control" id="exampleFormControlTextarea1" name="B_SECRET" style="width: 5%">
-					<option value="Y" >Y</option>
-					<option value="N">N</option>
-				</select>
-			</div>
-			<button type="submit" class="btn btn-info">등록하기</button>
-			<button type="button" class="btn btn-secondary">목록으로</button>
-		</form>
-	</div>
+<div class="card-body">
+	<form action="P_Board_Insert_POST" method="POST" id="frmBoardIN">
+		<div class="form-group">
+			<label for="exampleFormControlInput1">제목</label> <input type="text"
+				class="form-control" id="B_Subject_I" name="B_SUBJECT"
+				placeholder="제목을 작성해주세요.">
+		</div>
+		<div class="form-group">
+			<label for="exampleFormControlInput1">작성자</label> <input type="text"
+				class="form-control" id="B_Writer_I" name="B_WRITER" value="${session_id }">
+		</div>
+		<div class="form-group">
+			<label for="exampleFormControlTextarea1">내용</label>
+			<textarea class="form-control" id="B_Content_I"
+				name="B_CONTENT" rows="10"></textarea>
+		</div>
+		<div class="form-group">
+			<label for="exampleFormControlInput1">비밀글</label>
+			<select class="form-control" id="B_Secret_I" name="B_SECRET" style="width: 10%;">
+				<option value="Y" >Y</option>
+				<option value="N">N</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="exampleFormControlInput1">비밀번호</label> <input type="text"
+				class="form-control" id="B_Secret_Pwd_I" name="B_SECRET_PWD" style="width: 30%;">
+		</div>
+		<button type="submit" id="Board_Insert_Btn" class="btn btn-info">등록하기</button>
+		<button type="button" class="btn btn-secondary">목록으로</button>
+	</form>
+</div>

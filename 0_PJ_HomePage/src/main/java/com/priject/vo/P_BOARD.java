@@ -2,49 +2,55 @@ package com.priject.vo;
 
 public class P_BOARD {
 
-	private String B_NUM;
-	private String B_SUBJECT;
-	private String B_CONTENT;
-	private String B_WRITER;
-	private String B_SECRET;
-	private String B_SYSDATE;
+	private String B_NUM;			// 게시글 번호
+	private String B_SUBJECT;		// 게시글 제목
+	private String B_CONTENT;		// 게시글 내용
+	private String B_WRITER;		// 게시글 작성자
+	private String B_SECRET;		// 비밀글 여부
+	private String B_SYSDATE; 		// 게시글 작성일
+	private String B_SECRET_PWD; 	// 게시글 비밀번호
 	public String getB_NUM() {
-		return B_NUM.trim();
+		return B_NUM;
 	}
 	public String getB_SUBJECT() {
-		return B_SUBJECT.trim();
+		return B_SUBJECT;
 	}
 	public String getB_CONTENT() {
-		return B_CONTENT.trim();
+		return B_CONTENT;
 	}
 	public String getB_WRITER() {
-		return B_WRITER.trim();
+		return B_WRITER;
 	}
 	public String getB_SECRET() {
-		return B_SECRET.trim();
+		return B_SECRET;
 	}
 	public String getB_SYSDATE() {
-		return B_SYSDATE.trim();
+		return B_SYSDATE;
+	}
+	public String getB_SECRET_PWD() {
+		return B_SECRET_PWD;
 	}
 	public void setB_NUM(String b_NUM) {
-		this.B_NUM = b_NUM.trim();
+		B_NUM = b_NUM;
 	}
-	public void setB_SUBJECT(String b_SBUJECT) {
-		this.B_SUBJECT = b_SBUJECT.trim();
+	public void setB_SUBJECT(String b_SUBJECT) {
+		B_SUBJECT = b_SUBJECT;
 	}
 	public void setB_CONTENT(String b_CONTENT) {
-		this.B_CONTENT = b_CONTENT.trim();
+		B_CONTENT = b_CONTENT;
 	}
 	public void setB_WRITER(String b_WRITER) {
-		this.B_WRITER = b_WRITER.trim();
+		B_WRITER = b_WRITER;
 	}
 	public void setB_SECRET(String b_SECRET) {
-		this.B_SECRET = b_SECRET.trim();
+		B_SECRET = b_SECRET;
 	}
 	public void setB_SYSDATE(String b_SYSDATE) {
-		this.B_SYSDATE = b_SYSDATE.trim();
+		B_SYSDATE = b_SYSDATE;
 	}
-	
-	
+	public void setB_SECRET_PWD(String b_SECRET_PWD) {
+		B_SECRET_PWD = b_SECRET_PWD;
+	}
+
 	
 }

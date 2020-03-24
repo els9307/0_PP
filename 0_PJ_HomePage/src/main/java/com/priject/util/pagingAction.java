@@ -7,7 +7,6 @@ public class pagingAction {
 	public String paging(int count,int pageSize, int currentPage,String word) {
 		String file = "P_Tables";
 		int pageCount = count/pageSize + (count%pageSize==0?0:1);
-		System.out.println(pageCount);
 		int pageBlock = 3;
 		int startPage = ((currentPage-1)/pageBlock)*pageBlock+1;
 		int endPage = startPage + pageBlock-1;
@@ -22,6 +21,7 @@ public class pagingAction {
 				sb.append("<a class='button disabled' href="+file+"?");
 				sb.append("pageNum="+(startPage-pageBlock)+"&"+"word="+word);
 				sb.append(">[이전]</a>");
+				//localhost > pageNum= 1 or 2 & word = '검색어값'
 			}
 			//페이지
 			for (int i = startPage;i<=endPage;i++) {

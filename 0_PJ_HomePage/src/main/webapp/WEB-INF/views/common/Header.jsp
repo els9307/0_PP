@@ -81,7 +81,7 @@
       <li class="nav-item">
         <a class="nav-link" href="charts.html">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span></a>
+          <span>여긴뭐하지~</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
@@ -89,7 +89,7 @@
       <li class="nav-item">
         <a class="nav-link" id="" href="P_Tables">
           <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span></a>
+          <span>Community</span></a>
       </li>
 
     </ul>

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.priject.vo.P_BOARD;
 import com.priject.vo.P_COMMENT;
@@ -24,7 +25,11 @@ public interface PJ_Mapper {
 	
 	public int getCount(String word);
 	
-	public P_BOARD getList(String num);
+	public P_BOARD getList(HashMap<String, Object> map);
 	
 	public List<P_COMMENT> getComment(HashMap<String, Object> map);
+	
+	public void P_Comment_I(P_COMMENT pc);
+	
+	public int getCommentCount(String b_NUM);
 }

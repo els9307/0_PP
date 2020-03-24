@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.priject.service.PJ_service;
+import com.priject.util.CommentPagingAction;
 import com.priject.util.pagingAction;
 import com.priject.vo.P_BOARD;
 import com.priject.vo.P_COMMENT;
@@ -37,6 +38,9 @@ public class HomeController {
 	
 	@Autowired
 	private pagingAction page;
+	
+	@Autowired
+	private CommentPagingAction C_page;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
@@ -107,7 +111,6 @@ public class HomeController {
 	@GetMapping("P_Tables")
 	public String P_Tables(String pageNum,String word,Model model) {
 		word = word == null ? "" : word;
-		System.out.println("word=" +word);
 		String pageHtml;
 		if (pageNum == null)
 			pageNum = "1";
@@ -151,20 +154,50 @@ public class HomeController {
 	 * @GetMapping("P_ListView") public void P_ListView() {}
 	 */
 	@GetMapping("P_ListView")
-	public String getView(String num,Model model) {
-		System.out.println(num);
-		P_BOARD pb =ps.getList(num);
+	public String getView(String num,String pwd,Model model) {
+		pwd = pwd == null ? "" : pwd;
+		
+		P_BOARD pb =ps.getList(num,pwd);
 		model.addAttribute("pb",pb);
-		return "P_ListView";
+		return "callBackPage/P_ListView";
 	}
 
 	@GetMapping("P_Comment")
-	public String getComment_S(String b_NUM,Model model) {
-		System.out.println("코맨ㅌ"+b_NUM);
+	public String getComment_S(String pageNum,String b_NUM,String insertCheck,P_COMMENT pc, Model model) {
+		
+		String CommentPageHtml;
+		if (pageNum == null)
+			pageNum = "1";
+		int currentPage = Integer.parseInt(pageNum);
+		int count = ps.getCommentCount(b_NUM); // Comment total count
+		int pageSize = 5;
+		int startRow = (currentPage - 1) * pageSize + 1;
+		int endRow = startRow + pageSize - 1;
+		if (endRow > count)
+			endRow = count;
+		System.out.println("insertCheck"+insertCheck);
+		if(insertCheck != null) {
+			ps.P_Comment_I(pc); //Comment insert
+		}else {
+			System.out.println("지나갑니다");
+		}
+		
+		CommentPageHtml = C_page.paging(count, pageSize, currentPage,b_NUM);
 
-		List<P_COMMENT> arr = ps.getComment(b_NUM);
-		model.addAttribute("arr",arr);
-		System.out.println("도착");
+			List<P_COMMENT> arr = ps.getComment(b_NUM,startRow,endRow); // Comment List
+			
+			model.addAttribute("arr",arr);
+			model.addAttribute("CommentPageHtml",CommentPageHtml);
+		return "callBackPage/P_Comment";
+	}
+	@GetMapping("P_Comment_I")
+	public String getComment_I(String num,String pwd,P_COMMENT pc,Model model) {
+		ps.P_Comment_I(pc);
+
 		return "P_Comment";
+	}
+	@GetMapping("P_Board_U")
+	public String P_Board_U() {
+		return "";
 	}
 }
