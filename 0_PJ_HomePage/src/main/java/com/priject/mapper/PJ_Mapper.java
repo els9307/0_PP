@@ -32,4 +32,8 @@ public interface PJ_Mapper {
 	public void P_Comment_I(P_COMMENT pc);
 	
 	public int getCommentCount(String b_NUM);
+	
+	public void CommentDel(String c_NUM);
+	
+	public void Board_Update(P_BOARD pb);
 }

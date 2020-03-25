@@ -66,5 +66,11 @@ public class PJ_service {
 	public int getCommentCount(String b_NUM) {
 		return pm.getCommentCount(b_NUM);
 	}
-
+	
+	public void CommentDel(String c_NUM) {
+		pm.CommentDel(c_NUM);
+	}
+	public void Board_Update(P_BOARD pb) {
+		pm.Board_Update(pb);
+	}
 }

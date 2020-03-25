@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+
+<script>
+
+</script>
+
 <body>
 <div class="card-body">
     <div class="table-responsive">
@@ -16,12 +21,14 @@
 	  		<c:forEach items="${arr }" var="arr">
 	  			<tr>
 					<td style="width: 15%;">${arr.c_WRITER }</td>
-					<td>${arr.c_COMMENT }</td>
+					<td>${arr.c_COMMENT }<a href="#" id="CommentDel" onclick="javascript:fn_CommentDel('${arr.c_NUM}')"><i class="fas fa-trash-alt"></i></a></td>
 				</tr>
 			</c:forEach>
 	  	</tbody>
 	  </table>
-	  	${CommentPageHtml }
+		<div style="text-align: center">
+  			${CommentPageHtml }
+  		</div>
 	</div>
 </div>
 <%-- <div class="card-body">

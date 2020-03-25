@@ -27,11 +27,18 @@
 	</bean>
  	 <mybatis-spring:scan base-package="com.priject.mapper"/>
   	
-  	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-  		<property name="maxUploadSize" value="100000000"/>
-  		<property name="maxInMemorySize" value="100000000"/>
-  	</bean>
-  
+  	
+  	<!-- servlet-context에 넣으면 안됨 이유 모름 ! -->
+  	<!-- 이미지 파일 업로드 경로 및 사이즈  -->
+  	<bean class="java.lang.String" id="uploadPath">
+	<!--  <constructor-arg value="D:\\imgFile\\" /> -->
+	<constructor-arg value="C:\Users\els93\Desktop\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\0_PJ_HomePage\resources"/>
+	</bean>
+  	
+	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+	 <property name="maxUploadSize" value="10485760"/>
+	</bean>
+    <!-- 이미지 파일 업로드 경로 및 사이즈  -->
   
 	<context:component-scan base-package="com.priject.Papp"/>
 	<context:component-scan base-package="com.priject.vo"/>

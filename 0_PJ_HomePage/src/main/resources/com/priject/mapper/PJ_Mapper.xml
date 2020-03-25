@@ -37,6 +37,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  					   ,B_SECRET
 	  					   ,B_SYSDATE
 	  					   ,B_SECRET_PWD
+	  					   ,B_Img
+	  					   ,B_THUMBIMG
 	  					   )VALUES(
 	  					    P_BOARD_SEQ.nextval
 	  					   ,#{B_SUBJECT}
@@ -44,7 +46,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  					   ,#{B_WRITER}
 	  					   ,#{B_SECRET}
 	  					   ,TO_CHAR(SYSDATE,'YYYY-MM-DD')
-	  					   ,#{B_SECRET_PWD})
+	  					   ,#{B_SECRET_PWD}
+	  					   ,#{B_Img}
+	  					   ,#{B_THUMBIMG})
 		]]>	  					   
   	</insert>
   	
@@ -124,4 +128,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   			SELECT COUNT(*) FROM P_COMMENT WHERE B_NUM = #{b_NUM}
   		]]>
   	</select>
+  	
+  	<delete id="CommentDel" parameterType="String">
+  		<![CDATA[
+  			DELETE FROM P_COMMENT WHERE C_NUM = #{C_NUM}
+  		]]>
+  	</delete>
+  	
+  	<update id="Board_Update" parameterType="com.priject.vo.P_BOARD">
+  		<![CDATA[
+  			UPDATE P_BOARD
+  			SET
+  			B_SUBJECT = #{B_SUBJECT},
+  			B_CONTENT = #{B_CONTENT},
+  			B_SECRET = #{B_SECRET},
+  			B_SECRET_PWD = #{B_SECRET_PWD}
+  			WHERE B_NUM = #{B_NUM}
+  		]]>
+
+  	</update>
 </mapper>

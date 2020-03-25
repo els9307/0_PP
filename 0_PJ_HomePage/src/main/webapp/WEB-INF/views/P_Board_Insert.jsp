@@ -27,7 +27,7 @@
   	})
   </script>
 <div class="card-body">
-	<form action="P_Board_Insert_POST" method="POST" id="frmBoardIN">
+	<form action="fileUpload_post" method="POST" id="frmBoardIN" enctype="multipart/form-data">
 		<div class="form-group">
 			<label for="exampleFormControlInput1">제목</label> <input type="text"
 				class="form-control" id="B_Subject_I" name="B_SUBJECT"
@@ -52,8 +52,27 @@
 		<div class="form-group">
 			<label for="exampleFormControlInput1">비밀번호</label> <input type="text"
 				class="form-control" id="B_Secret_Pwd_I" name="B_SECRET_PWD" style="width: 30%;">
+
 		</div>
+		 <label for="gdsImg">이미지</label>
+ <input type="file" id="gdsImg" name="file" />
+ <div class="select_img"><img src="" /></div>
+ 
 		<button type="submit" id="Board_Insert_Btn" class="btn btn-info">등록하기</button>
 		<button type="button" class="btn btn-secondary">목록으로</button>
 	</form>
+	
+	
+
+ <script>
+  $("#gdsImg").change(function(){
+   if(this.files && this.files[0]) {
+    var reader = new FileReader;
+    reader.onload = function(data) {
+     $(".select_img img").attr("src", data.target.result).width(300);        
+    }
+    reader.readAsDataURL(this.files[0]);
+   }
+  });
+ </script>
 </div>

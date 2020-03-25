@@ -1,5 +1,8 @@
 package com.priject.Papp;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,8 +11,11 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +25,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.priject.service.PJ_service;
 import com.priject.util.CommentPagingAction;
+import com.priject.util.UploadFileUtils;
 import com.priject.util.pagingAction;
 import com.priject.vo.P_BOARD;
 import com.priject.vo.P_COMMENT;
@@ -42,6 +52,8 @@ public class HomeController {
 	@Autowired
 	private CommentPagingAction C_page;
 	
+	@Resource(name="uploadPath")
+	private String uploadPath;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	/**
@@ -162,32 +174,41 @@ public class HomeController {
 		return "callBackPage/P_ListView";
 	}
 
-	@GetMapping("P_Comment")
-	public String getComment_S(String pageNum,String b_NUM,String insertCheck,P_COMMENT pc, Model model) {
-		
+	//@GetMapping("P_Comment")
+	@PostMapping("P_Comment")
+	public String getComment_S(String pageNum,String b_NUM,String Check,P_COMMENT pc,String comment_Num, Model model) {
+		System.out.println(pc.getC_NUM());
+		System.out.println(pc.getC_WRITER());
+		System.out.println(pc.getC_COMMENT());
+		Check = Check == null ? "0" : Check;
+		System.out.println("bnum =" + b_NUM);
 		String CommentPageHtml;
 		if (pageNum == null)
 			pageNum = "1";
 		int currentPage = Integer.parseInt(pageNum);
 		int count = ps.getCommentCount(b_NUM); // Comment total count
+		System.out.println("count = "+ count);
 		int pageSize = 5;
 		int startRow = (currentPage - 1) * pageSize + 1;
 		int endRow = startRow + pageSize - 1;
 		if (endRow > count)
 			endRow = count;
-		System.out.println("insertCheck"+insertCheck);
-		if(insertCheck != null) {
+		if(Check.equals("1")) { 
+			System.out.println("Check = "+Check);
 			ps.P_Comment_I(pc); //Comment insert
-		}else {
-			System.out.println("지나갑니다");
+			
+		}else if(Check.equals("2")) {
+			System.out.println("Check = "+Check);
+			ps.CommentDel(comment_Num);
 		}
 		
 		CommentPageHtml = C_page.paging(count, pageSize, currentPage,b_NUM);
 
 			List<P_COMMENT> arr = ps.getComment(b_NUM,startRow,endRow); // Comment List
-			
+			System.out.println("arrSize"+arr.size());
 			model.addAttribute("arr",arr);
 			model.addAttribute("CommentPageHtml",CommentPageHtml);
+			System.out.println("-----------------------------------------");
 		return "callBackPage/P_Comment";
 	}
 	@GetMapping("P_Comment_I")
@@ -196,8 +217,41 @@ public class HomeController {
 
 		return "P_Comment";
 	}
-	@GetMapping("P_Board_U")
-	public String P_Board_U() {
-		return "";
+	//@GetMapping("P_Board_U")
+	@PostMapping("P_Board_View_U")
+	public String P_Board_U(String num,String pwd,Model model) {
+		P_BOARD pb = ps.getList(num, pwd);
+		model.addAttribute("pb",pb);
+		
+		
+		return "P_Board_View_U.c";
+	}
+	@PostMapping("P_Board_Update_POST")
+	public String Board_Update(P_BOARD pb) {
+		System.out.println(pb.getB_NUM());
+		System.out.println("???");
+		ps.Board_Update(pb);
+		return "redirect:P_Tables.c";
+	}
+	@GetMapping("fileUpload")
+	public void fileUpload() {}
+	
+	
+	@PostMapping("fileUpload_post")
+	public String fileUpload(P_BOARD pb,MultipartFile file) throws IOException, Exception {
+		String imgUpliadPath = uploadPath + File.separator + "imgUpload";
+		String ymdPath = UploadFileUtils.calcPath(imgUpliadPath);
+		String fileName = null;
+		
+		if(file != null) {
+			fileName = UploadFileUtils.fileUpload(imgUpliadPath,file.getOriginalFilename(),file.getBytes(),ymdPath);
+		}else {
+			fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
+		}
+		
+		pb.setB_Img(File.separator + "imgUpload" + ymdPath + File.separator + fileName);
+		pb.setB_THUMBIMG(File.separator + "imgUpload" +ymdPath + File.separator + "s" + File.separator + "s_" +fileName);
+		ps.P_Board_Insert_POST(pb);
+		return "redirect:P_Tables.c";
 	}
 }
